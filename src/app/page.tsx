@@ -13,9 +13,22 @@ interface CodeProps {
   [key: string]: any;
 }
 
+// Ajout d'une nouvelle interface pour les sources
+interface Source {
+  title: string;
+  url: string;
+  favicon?: string;
+}
+
+interface Message {
+  role: string;
+  content: string;
+  sources?: Source[];
+}
+
 export default function Home() {
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<Array<{ role: string; content: string }>>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -40,6 +53,35 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Nouvelle fonction pour le rendu des sources
+  const renderSources = (sources?: Source[]) => {
+    if (!sources?.length) return null;
+    
+    return (
+      <div className="mt-4 space-y-2">
+        <p className="text-sm font-medium text-gray-500">Sources:</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {sources.map((source, index) => (
+            <a
+              key={index}
+              href={source.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center p-2 space-x-3 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              {source.favicon && (
+                <img src={source.favicon} alt="" className="w-4 h-4" />
+              )}
+              <span className="text-sm text-gray-600 line-clamp-1">
+                {source.title}
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -76,44 +118,101 @@ export default function Home() {
               </div>
             </header>
 
-            {/* Chat Messages */}
-            <div className="space-y-4 min-h-[400px]">
+            {/* Chat Messages - Updated styling */}
+            <div className="space-y-6 min-h-[400px] pb-20">
               {messages.map((message, index) => (
                 <div
                   key={index}
                   className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[85%] rounded-2xl p-5 shadow-sm ${
+                    className={`max-w-[85%] rounded-2xl shadow-sm overflow-hidden ${
                       message.role === "user"
-                        ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white"
-                        : "bg-white text-gray-900"
+                        ? "bg-gradient-to-r from-indigo-500 to-purple-500"
+                        : "bg-white"
                     }`}
                   >
-                    <ReactMarkdown
-                      className={`prose ${message.role === "user" ? "prose-invert" : ""} max-w-none`}
-                      remarkPlugins={[remarkGfm]}
-                      rehypePlugins={[rehypeRaw, rehypeSanitize]}
-                      components={{
-                        code: ({ className, children, ...props }: CodeProps) => (
-                          <code className={`${className} bg-opacity-20 rounded px-1`} {...props}>
-                            {children}
-                          </code>
-                        ),
-                      }}
-                    >
-                      {message.content}
-                    </ReactMarkdown>
+                    {/* Message Header */}
+                    <div className={`px-5 py-3 border-b ${
+                      message.role === "user"
+                        ? "border-white/10"
+                        : "border-gray-100"
+                    }`}>
+                      <div className="flex items-center space-x-2">
+                        {message.role === "user" ? (
+                          <>
+                            <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                              <MessageCircle className="w-4 h-4 text-white" />
+                            </div>
+                            <span className="text-sm font-medium text-white">You</span>
+                          </>
+                        ) : (
+                          <>
+                            <div className="w-6 h-6 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center">
+                              <MessageCircle className="w-4 h-4 text-white" />
+                            </div>
+                            <span className="text-sm font-medium text-gray-900">AI Assistant</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Message Content */}
+                    <div className={`px-5 py-4 ${
+                      message.role === "user" ? "text-white" : "text-gray-900"
+                    }`}>
+                      <ReactMarkdown
+                        className={`prose ${message.role === "user" ? "prose-invert" : ""} max-w-none`}
+                        remarkPlugins={[remarkGfm]}
+                        rehypePlugins={[rehypeRaw, rehypeSanitize]}
+                        components={{
+                          code: ({ className, children, ...props }: CodeProps) => (
+                            <code 
+                              className={`${className} ${
+                                message.role === "user" 
+                                  ? "bg-white/10" 
+                                  : "bg-gray-100"
+                              } rounded px-1.5 py-0.5`} 
+                              {...props}
+                            >
+                              {children}
+                            </code>
+                          ),
+                          p: ({ children }) => (
+                            <p className="mb-3 last:mb-0">{children}</p>
+                          ),
+                          ul: ({ children }) => (
+                            <ul className="space-y-2 my-3">{children}</ul>
+                          ),
+                          li: ({ children }) => (
+                            <li className="flex space-x-2">
+                              <span>•</span>
+                              <span>{children}</span>
+                            </li>
+                          ),
+                        }}
+                      >
+                        {message.content}
+                      </ReactMarkdown>
+                      {message.sources && renderSources(message.sources)}
+                    </div>
                   </div>
                 </div>
               ))}
+
+              {/* Loading Indicator - Updated styling */}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="bg-white rounded-2xl p-4 shadow-sm">
-                    <div className="flex gap-2">
-                      <div className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce" />
-                      <div className="w-2 h-2 rounded-full bg-purple-500 animate-bounce delay-100" />
-                      <div className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce delay-200" />
+                  <div className="bg-white rounded-2xl p-5 shadow-sm">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-6 h-6 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center">
+                        <MessageCircle className="w-4 h-4 text-white animate-pulse" />
+                      </div>
+                      <div className="flex gap-2">
+                        <div className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce" />
+                        <div className="w-2 h-2 rounded-full bg-purple-500 animate-bounce delay-100" />
+                        <div className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce delay-200" />
+                      </div>
                     </div>
                   </div>
                 </div>
