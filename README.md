@@ -1,15 +1,32 @@
-# Ansh & Riley Full-Stack Template
+# Deepseek-Plex - AI-Powered Search Interface
 
-This is a full-stack template project for Software Composers to create  applications with AI.
+![Next.js](https://img.shields.io/badge/Next.js-14.0.0-black?logo=next.js)
+![Deepseek-R1](https://img.shields.io/badge/Deepseek-R1-7d3aea)
 
-## Getting started
-To create a new project, you go to `/paths`, choose from our list of Paths, and then use Cursor's Composer feature to quickly scaffold your project!
+A Perplexity AI-inspired search interface powered by Next.js 14 and Deepseek-R1, the new cost-efficient reasoning model rivaling GPT-4 capabilities.
 
-You can also edit the Path's prompt template to be whatever you like!
+## Key Features ✨
 
-## Technologies used
-This doesn't really matter, but is useful for the AI to understand more about this project. We are using the following technologies
-- React with Next.js 14 App Router
-- TailwindCSS
-- Firebase Auth, Storage, and Database
-- Multiple AI endpoints including OpenAI, Anthropic, and Replicate using Vercel's AI SDK
+- **AI-Powered Answers** - Real-time search augmented with Deepseek-R1's advanced reasoning
+- **Citation Tracking** - Automatic source references for factual verification
+- **Multi-perspective** - Concurrent search results from multiple providers
+- **Streaming UI** - Real-time response streaming with Vercel AI SDK
+- **Session History** - Firebase-powered conversation history with search context
+- **Optimized Costs** - 90% lower costs vs OpenAI while maintaining GPT-4 level performance
+
+## Tech Stack 🛠️
+
+**Core Framework**
+- Next.js 14 App Router
+- React Server Components
+- Tailwind CSS + Shadcn UI
+
+**AI Infrastructure**
+- Deepseek-R1 Reasoning Engine
+- Vercel AI SDK (Streaming)
+- Alternative LLM Fallbacks (Anthropic, OpenAI)
+
+**Backend Services**
+- Firebase Authentication
+- Firestore Database
+- Deepgram Audio Processing
