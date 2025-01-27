@@ -24,6 +24,10 @@ interface Message {
   role: string;
   content: string;
   sources?: Source[];
+  links?: {
+    text: string;
+    url: string;
+  }[];
 }
 
 export default function Home() {
@@ -189,6 +193,20 @@ export default function Home() {
                               <span>•</span>
                               <span>{children}</span>
                             </li>
+                          ),
+                          a: ({ href, children }) => (
+                            <a
+                              href={href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`${
+                                message.role === "user"
+                                  ? "text-white underline hover:text-white/80"
+                                  : "text-indigo-600 hover:text-indigo-700 underline"
+                              } transition-colors`}
+                            >
+                              {children}
+                            </a>
                           ),
                         }}
                       >
