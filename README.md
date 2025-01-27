@@ -5,6 +5,8 @@
 
 A Perplexity AI-inspired search interface powered by Next.js 14 and Deepseek-R1, the new cost-efficient reasoning model rivaling GPT-4 capabilities.
 
+![Deepseek Plex Interface](home_clone.png)
+
 ## Key Features ✨
 
 - **AI-Powered Answers** - Real-time search augmented with Deepseek-R1's advanced reasoning

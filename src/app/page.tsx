@@ -93,7 +93,7 @@ export default function Home() {
             {/* Header */}
             <header className="bg-white rounded-2xl p-6 shadow-sm">
               <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                AI Assistant
+                Search Everything by AI
               </h1>
               <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
                 <div className="flex items-center gap-3">
